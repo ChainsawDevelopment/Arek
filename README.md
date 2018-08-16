@@ -1,3 +1,4 @@
+Bot that keeps an eye on your pull requests!
 
 # Project structure
 
