@@ -12,7 +12,7 @@ Bot that keeps an eye on your pull requests!
  - `notifier-gitlab` - Implements GitLab client for notifier to retrieve pull requests
  - `notifier-jira` - Implements JIRA client for notifier to retrieve ticket statuses
  - `notifier-slack` - Implements Slack client for notifier to send out the notifications
- - `notifier-rocketchat` - Implements Slack client for notifier to send out the notifications
+ - `notifier-rocketchat` - Implements Rocketchat client for notifier to send out the notifications
  
 # Roadmap
 
