@@ -35,11 +35,17 @@ namespace notifier_gitlab
         public TicketDetails TicketDetails { get; set; }
         public Dictionary<string, string[]> CommentAuthors { get; set; }
         public ProjectDetails ProjectDetails { get; }
+        public string HeadHash => _wrapped.Sha;
 
         public string TargetBranch => _wrapped.TargetBranch;
         public string SourceBranch => _wrapped.SourceBranch;
         public int ProjectId => _wrapped.ProjectId;
         public int SourceProjectId => _wrapped.SourceProjectId;
         public int TargetProjectId => _wrapped.TargetProjectId;
+
+        public void ApplyAdditionalDetails(AdditionalProjectDetails additionalProjectDetails)
+        {
+            ProjectDetails.TypedClone().AddDataFrom(additionalProjectDetails);
+        }
     }
 }

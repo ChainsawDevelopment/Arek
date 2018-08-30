@@ -19,6 +19,11 @@ namespace GitLabNotifier.VCS.Bitbucket
             _bitBucketApiClient = new BitBucketApiClient(gitUrl, gitApiToken);
         }
 
+        public Task<AdditionalProjectDetails> RetrieveAdditionalProjectDetails(string projectId, string commitHash)
+        {
+            return Task.FromResult((AdditionalProjectDetails) null);
+        }
+
         public async Task<IMergeRequest[]> GetOpenMergeRequests(string projectName)
         {
             Console.WriteLine($"Getting open merge requests for {projectName}");
