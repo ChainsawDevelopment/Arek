@@ -88,6 +88,7 @@ namespace notifier_gitlab
             }
             catch (Exception)
             {
+                Console.WriteLine($"File {file} not found for {projectId}, ref {commitHash}");
                 return default(T);
             }
         }

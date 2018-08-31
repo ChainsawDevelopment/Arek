@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using GitLabNotifier;
 using notifier_gitlab;
 using notifier_rocketchat;
