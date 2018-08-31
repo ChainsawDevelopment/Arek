@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace GitLabNotifier.VCS
@@ -33,11 +34,44 @@ namespace GitLabNotifier.VCS
         }
     }
 
-    public class ProjectDetails
+
+    public interface IProjectDetails
+    {
+        string PrimaryReviewers { get; set; }
+        string SecondaryReviewers { get; set; }
+    }
+
+    public class AdditionalProjectDetails : IProjectDetails
+    {
+        public string PrimaryReviewers { get; set; }
+        public string SecondaryReviewers { get; set; }
+    }
+
+    public class ProjectDetails : ICloneable
     {
         public string Name { get; set; }
         public string ShortName { get; set; }
         public string[] PrimaryReviewers { get; set; }
         public string[] SecondaryReviewers { get; set; }
+
+        public void AddDataFrom(IProjectDetails otherProjectDetails)
+        {
+            if (otherProjectDetails == null) return;
+
+            PrimaryReviewers = NullIfEmpty(otherProjectDetails.PrimaryReviewers)?.Split(',') ?? this.PrimaryReviewers;
+            SecondaryReviewers = NullIfEmpty(otherProjectDetails.SecondaryReviewers)?.Split(',') ?? this.SecondaryReviewers;
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
+        
+        public ProjectDetails TypedClone()
+        {
+            return MemberwiseClone() as ProjectDetails;
+        }
+
+        private string NullIfEmpty(string str) => string.IsNullOrEmpty(str) ? null : str;
     }
 }

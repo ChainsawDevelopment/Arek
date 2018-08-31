@@ -20,5 +20,7 @@ namespace GitLabNotifier.VCS
         TicketDetails TicketDetails { get; set; }
         Dictionary<string, string[]> CommentAuthors { get; set; }
         ProjectDetails ProjectDetails { get; }
+        string HeadHash { get; }
+        void ApplyAdditionalDetails(AdditionalProjectDetails additionalProjectDetails);
     }
 }

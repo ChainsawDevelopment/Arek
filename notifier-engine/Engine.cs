@@ -31,12 +31,23 @@ namespace GitLabNotifier
             ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
         }
 
+        public IEnumerable<Task> UpdateMergeRequestsWithArekfile(IMergeRequest[] mergeRequests)
+        {
+            foreach (var mergeRequest in mergeRequests)
+            {
+                yield return _gitServers.First().RetrieveAdditionalProjectDetails(mergeRequest.Project, mergeRequest.HeadHash)
+                    .ContinueWith(additionalDetails => mergeRequest.ApplyAdditionalDetails(additionalDetails.Result));
+            }
+        }
+
         public async Task<IEnumerable<IMessage>> GenerateMessages(string gitlabToken = null)
         {
             var configuration = Configuration.Instance.Value;
             configuration.ReloadDevs();
 
-            var mergeRequests = await LoadMergeRequests();
+            IMergeRequest[] mergeRequests = await LoadMergeRequests();
+
+            await Task.WhenAll(UpdateMergeRequestsWithArekfile(mergeRequests));
 
             foreach (var reviewerAssigner in _reviewerAssigners)
             {

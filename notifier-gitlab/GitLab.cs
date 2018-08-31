@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using GitLabNotifier;
 using GitLabNotifier.VCS;
@@ -72,7 +73,24 @@ namespace notifier_gitlab
             return markCommentAuthors;
         }
 
+        public async Task<AdditionalProjectDetails> RetrieveAdditionalProjectDetails(string projectId, string commitHash)
+        {
+            return await GetFileContent<AdditionalProjectDetails>(projectId, commitHash, "Arekfile.json");
+        }
 
+        public async Task<T> GetFileContent<T>(string projectId, string commitHash, string file)
+        {
+            var api = new Api(_gitlabUrl, _gitlabApiToken, Api.ApiVersion.V4);
+            try
+            {
+                var fileUrl = $"/projects/{projectId}/repository/files/{Uri.EscapeDataString(file)}/raw?ref={commitHash}";
+                return await Task.Run(() => api.Get().To<T>(fileUrl));
+            }
+            catch (Exception)
+            {
+                return default(T);
+            }
+        }
 
         public static GitLab ConfiguredWith(Configuration configuration)
         {

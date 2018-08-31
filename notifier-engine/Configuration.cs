@@ -94,7 +94,7 @@ namespace GitLabNotifier
                 Name = configSection.Key,
                 PrimaryReviewers = configSection["primary"]?.Split(',') ?? new string[] { },
                 SecondaryReviewers = configSection["secondary"]?.Split(new char [] {','}, StringSplitOptions.RemoveEmptyEntries ) ?? new string[] { },
-                ShortName = configSection["shortName"] ?? string.Empty
+                ShortName = configSection["shortName"] ?? configSection.Key
             };
         }
     }
