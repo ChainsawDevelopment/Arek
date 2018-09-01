@@ -21,9 +21,9 @@ namespace notifier_console_core
             var outputMessages = new Engine()
                 .Using(GitLab.ConfiguredWith(config))
                 .Using(PersistentReviewerAssigner.ConfiguredWith(config))
-                .Using(MissingReviewsRequestRule.ConfiguredWith(config))
-                .Using(OldRequestRule.ConfiguredWith(config))
-                .Using(new StillDownvotedRequestRule())
+                .Using(new MissingReviewsRequestRuleFactory().Create(config.Rules))
+                .Using(new OldRequestRuleFactory().Create(config.Rules))
+                .Using(new StillDownvotedRequestRuleFactory().Create(config.Rules))
                 .GenerateMessages()
                 .Result;
 

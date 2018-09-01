@@ -10,11 +10,6 @@ namespace GitLabNotifier
         private readonly int[] _oldRequestThresholdsDays;
         private readonly int _requiredVotes;
 
-        public static OldRequestRule ConfiguredWith(Configuration configuration)
-        {
-            return new OldRequestRule(configuration.OldRequestThresholdsDays, configuration.RequiredVotesCount);
-        }
-
         public OldRequestRule(int[] oldRequestThresholdsDays, int requiredVotes)
         {
             _oldRequestThresholdsDays = oldRequestThresholdsDays;
@@ -43,4 +38,20 @@ namespace GitLabNotifier
             return ticketRequests.Select(GetMessage);
         }
     }
+
+    public class OldRequestRuleFactory : IRuleFactory<OldRequestRule>
+    {
+        public OldRequestRule Create(IDictionary<string, string> options)
+        {
+            return new OldRequestRule(
+                ReadOldRequestThresholds(options), 
+                options["RequiredVotesCount"].ToInt());
+        }
+
+        private static int[] ReadOldRequestThresholds(IDictionary<string, string> options) => options["OldRequestThresholdsDays"]
+            .Split(',')
+            .Select(s => s.ToInt())
+            .ToArray();
+    }
+
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using GitLabNotifier.VCS;
@@ -43,16 +44,15 @@ namespace GitLabNotifier
             configuration.GitLabUrl = configReader["GitLabUrl"];
             configuration.JiraBaseUrl = configReader["JiraUrl"];
             configuration.JiraToken = configReader["JiraToken"];
-            configuration.OldRequestThresholdsDays = configReader["OldRequestThresholdsDays"]
-                .Split(',')
-                .Select(s => s.Trim())
-                .Select(int.Parse)
-                .ToArray();
 
             configuration.ReloadDevs();
 
+            configuration.Rules = configReader.GetSection("rules").GetChildren().ToDictionary(c => c.Key, c => c.LoadRule());
+
             return configuration;
         }
+
+        public Dictionary<string, IDictionary<string, string>> Rules { get; set; }
 
         public string BitbucketTeamUuid { get; private set; }
 
@@ -96,6 +96,12 @@ namespace GitLabNotifier
                 SecondaryReviewers = configSection["secondary"]?.Split(new char [] {','}, StringSplitOptions.RemoveEmptyEntries ) ?? new string[] { },
                 ShortName = configSection["shortName"] ?? configSection.Key
             };
+        }
+
+        public static IDictionary<string, string> LoadRule(this IConfigurationSection configSection)
+        {
+            return configSection.GetChildren().ToDictionary(c => c.Key, c => c.Value);
+
         }
     }
 }

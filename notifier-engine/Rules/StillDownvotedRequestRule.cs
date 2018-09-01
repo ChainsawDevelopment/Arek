@@ -23,4 +23,12 @@ namespace GitLabNotifier
             return ticketRequests.Select(GetMessage);
         }
     }
+
+    public class StillDownvotedRequestRuleFactory : IRuleFactory<StillDownvotedRequestRule>
+    {
+        public StillDownvotedRequestRule Create(IDictionary<string, string> options)
+        {
+            return new StillDownvotedRequestRule();
+        }
+    }
 }

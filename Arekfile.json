@@ -1,4 +1,15 @@
 {
     "primaryReviewers": "",
-    "secondaryReviewers": ""
+    "secondaryReviewers": "",
+    "rules": {
+        "MissingReviewsRequestRule": {
+            "RequiredVotesCount": 2
+        },
+        "OldRequestRule": {
+            "OldRequestThresholdsDays": "3,7",
+            "RequiredVotesCount": 2
+        },
+        "StillDownvotedRequestRule": {
+        }
+    }
 }

@@ -4,14 +4,35 @@ using GitLabNotifier.VCS;
 
 namespace GitLabNotifier
 {
+    static class StringExtensions
+    {
+        public static int ToInt(this string value) => int.Parse(value);
+    }
+
+    public interface IRuleFactory<out TRule>
+    {
+        TRule Create(IDictionary<string, string> options);
+    }
+
+    public static class RuleFactoryExtensions
+    {
+        public static TRule Create<TRule>(this IRuleFactory<TRule> factory, IDictionary<string, IDictionary<string, string>> rulesConfig)
+        {
+            return factory.Create(rulesConfig[typeof(TRule).Name]);
+        }
+    }
+
+    public class MissingReviewsRequestRuleFactory : IRuleFactory<MissingReviewsRequestRule>
+    {
+        public MissingReviewsRequestRule Create(IDictionary<string, string> options)
+        {
+            return new MissingReviewsRequestRule(options["RequiredVotesCount"].ToInt());
+        }
+    }
+
     public class MissingReviewsRequestRule : IMessageRule
     {
         private readonly int _requiredVotesCount;
-
-        public static MissingReviewsRequestRule ConfiguredWith(Configuration configuration)
-        {
-            return new MissingReviewsRequestRule(configuration.RequiredVotesCount);
-        }
 
         public MissingReviewsRequestRule(int requiredVotesCount)
         {
@@ -20,14 +41,11 @@ namespace GitLabNotifier
 
         public RequestMessage GetMessage(IMergeRequest request)
         {
-            var requiredVotes = _requiredVotesCount;
-            if (request.Upvotes < requiredVotes && requiredVotes - request.CommentAuthors["devs"].Length - request.CommentAuthors["qas"].Length > 0)
+            if (request.Upvotes < _requiredVotesCount && _requiredVotesCount - request.CommentAuthors["devs"].Length - request.CommentAuthors["qas"].Length > 0)
             {
-                var applicableDevs = request.Reviewers;                
-
                 return new RequestMessage(request, 
-                    $"{requiredVotes - request.CommentAuthors["devs"].Length} more review needed",
-                    applicableDevs);
+                    $"{_requiredVotesCount - request.CommentAuthors["devs"].Length} more review needed",
+                    request.Reviewers);
             }
 
             return null;
