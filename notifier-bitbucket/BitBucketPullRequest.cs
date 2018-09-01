@@ -30,11 +30,8 @@ namespace GitLabNotifier.VCS.Bitbucket
 
         public IEnumerable<string> CommentsAuthors { get; set; }
         public ProjectDetails ProjectDetails { get; set; }
+        public List<IMessageRule> Rules { get; } = new List<IMessageRule>();
         public string HeadHash { get; set; }
-        public void ApplyAdditionalDetails(AdditionalProjectDetails additionalProjectDetails)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     static class EnumerableHelper

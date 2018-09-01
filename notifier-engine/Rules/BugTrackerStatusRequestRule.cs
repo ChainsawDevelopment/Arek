@@ -75,5 +75,15 @@ namespace GitLabNotifier
                 GetAllRequestsApprovedMessage(ticket, mergeRequests) as IMessage
             });
         }
+
+        public IEnumerable<IMessage> GetMessages(IMergeRequest request)
+        {
+            return new IMessage[]
+            {
+                GetMessage(request),
+                GetAllRequestsApprovedMessage(request.TicketDetails, new[] {request})
+            };
+        }
+        
     }
 }

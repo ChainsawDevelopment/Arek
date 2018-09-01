@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GitLabNotifier;
 using GitLabNotifier.VCS;
 
 namespace notifier_gitlab
@@ -34,7 +35,8 @@ namespace notifier_gitlab
         public string GetPrefferedAssignment(List<string> applicableUsers) => null;
         public TicketDetails TicketDetails { get; set; }
         public Dictionary<string, string[]> CommentAuthors { get; set; }
-        public ProjectDetails ProjectDetails { get; }
+        public ProjectDetails ProjectDetails { get; set; }
+        public List<IMessageRule> Rules { get; } = new List<IMessageRule>();
         public string HeadHash => _wrapped.Sha;
 
         public string TargetBranch => _wrapped.TargetBranch;
@@ -43,9 +45,6 @@ namespace notifier_gitlab
         public int SourceProjectId => _wrapped.SourceProjectId;
         public int TargetProjectId => _wrapped.TargetProjectId;
 
-        public void ApplyAdditionalDetails(AdditionalProjectDetails additionalProjectDetails)
-        {
-            ProjectDetails.TypedClone().AddDataFrom(additionalProjectDetails);
-        }
+        
     }
 }

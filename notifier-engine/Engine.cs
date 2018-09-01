@@ -23,7 +23,7 @@ namespace GitLabNotifier
     {
         private ITicketSystem _ticketSystem = new PhonyTicketSystem();
         private readonly List<IGitServer> _gitServers = new List<IGitServer>();
-        private readonly List<IMessageRule> _rules = new List<IMessageRule>();
+        private readonly List<IMessageRule> _defaultRules = new List<IMessageRule>();
         private readonly List<IReviewerAssignStrategy> _reviewerAssigners = new List<IReviewerAssignStrategy>();
 
         static Engine()
@@ -47,6 +47,12 @@ namespace GitLabNotifier
 
             IMergeRequest[] mergeRequests = await LoadMergeRequests();
 
+            // Fill in defaults
+            foreach (var mergeRequest in mergeRequests)
+            {
+                mergeRequest.FillDefaultValues(_defaultRules);
+            }
+
             await Task.WhenAll(UpdateMergeRequestsWithArekfile(mergeRequests));
 
             foreach (var reviewerAssigner in _reviewerAssigners)
@@ -55,8 +61,7 @@ namespace GitLabNotifier
             }
 
             var outputMessages = mergeRequests.GroupBy(request => request.TicketDetails)
-                .SelectMany(ticketRequests =>
-                    _rules.SelectMany(rule => rule.GetMessages(ticketRequests.Key, ticketRequests)))
+                .SelectMany(ticketRequests => ticketRequests.GenerateMessages())
                 .Where(message => message != null)
                 .ToList();
 
@@ -77,7 +82,7 @@ namespace GitLabNotifier
 
         public Engine Using(IMessageRule rule)
         {
-            _rules.Add(rule);
+            _defaultRules.Add(rule);
             return this;
         }
 
