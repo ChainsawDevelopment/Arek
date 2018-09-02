@@ -75,7 +75,8 @@ namespace notifier_gitlab
 
         public async Task<AdditionalProjectDetails> RetrieveAdditionalProjectDetails(string projectId, string commitHash)
         {
-            return await GetFileContent<AdditionalProjectDetails>(projectId, commitHash, "Arekfile.json");
+            var details = await GetFileContent<AdditionalProjectDetails>(projectId, commitHash, "Arekfile.json");
+            return details;
         }
 
         public async Task<T> GetFileContent<T>(string projectId, string commitHash, string file)

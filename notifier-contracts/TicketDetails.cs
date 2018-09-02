@@ -33,8 +33,7 @@ namespace GitLabNotifier.VCS
             return (Id != null ? Id.GetHashCode() : 0);
         }
     }
-
-
+    
     public interface IProjectDetails
     {
         string PrimaryReviewers { get; set; }
@@ -45,6 +44,7 @@ namespace GitLabNotifier.VCS
     {
         public string PrimaryReviewers { get; set; }
         public string SecondaryReviewers { get; set; }
+        public Dictionary<string, Dictionary<string, string>> Rules { get; set; }
     }
 
     public class ProjectDetails : ICloneable

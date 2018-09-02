@@ -34,7 +34,7 @@ namespace GitLabNotifier.VCS
             request.ProjectDetails.AddDataFrom(additionalProjectDetails);
         }
 
-        public static void FillDefaultValues(this IMergeRequest request, List<IMessageRule> rules)
+        public static void SetRules(this IMergeRequest request, List<IMessageRule> rules)
         {
             request.Rules.Clear();
             request.Rules.AddRange(rules);

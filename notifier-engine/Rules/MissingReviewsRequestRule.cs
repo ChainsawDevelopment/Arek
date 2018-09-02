@@ -4,32 +4,6 @@ using GitLabNotifier.VCS;
 
 namespace GitLabNotifier
 {
-    static class StringExtensions
-    {
-        public static int ToInt(this string value) => int.Parse(value);
-    }
-
-    public interface IRuleFactory<out TRule>
-    {
-        TRule Create(IDictionary<string, string> options);
-    }
-
-    public static class RuleFactoryExtensions
-    {
-        public static TRule Create<TRule>(this IRuleFactory<TRule> factory, IDictionary<string, IDictionary<string, string>> rulesConfig)
-        {
-            return factory.Create(rulesConfig[typeof(TRule).Name]);
-        }
-    }
-
-    public class MissingReviewsRequestRuleFactory : IRuleFactory<MissingReviewsRequestRule>
-    {
-        public MissingReviewsRequestRule Create(IDictionary<string, string> options)
-        {
-            return new MissingReviewsRequestRule(options["RequiredVotesCount"].ToInt());
-        }
-    }
-
     public class MissingReviewsRequestRule : IMessageRule
     {
         private readonly int _requiredVotesCount;
@@ -54,6 +28,14 @@ namespace GitLabNotifier
         public IEnumerable<IMessage> GetMessages(TicketDetails ticket, IEnumerable<IMergeRequest> ticketRequests)
         {
             return ticketRequests.Select(GetMessage);
+        }
+
+        public class Factory : IRuleFactory<MissingReviewsRequestRule>
+        {
+            public MissingReviewsRequestRule Create(IDictionary<string, string> options)
+            {
+                return new MissingReviewsRequestRule(options["RequiredVotesCount"].ToInt());
+            }
         }
     }
 }

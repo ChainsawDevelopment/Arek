@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using System.Net;
 using GitLabNotifier;
 using notifier_gitlab;
@@ -14,16 +14,17 @@ namespace notifier_console_core
 
             RunOnce();
         }
-
+        
         private static void RunOnce()
         {
             var config = Configuration.Instance.Value;
+            
+            var rules = config.Rules.Select(kvp => Rule.For(kvp.Key, kvp.Value)).ToArray();
+
             var outputMessages = new Engine()
                 .Using(GitLab.ConfiguredWith(config))
                 .Using(PersistentReviewerAssigner.ConfiguredWith(config))
-                .Using(new MissingReviewsRequestRuleFactory().Create(config.Rules))
-                .Using(new OldRequestRuleFactory().Create(config.Rules))
-                .Using(new StillDownvotedRequestRuleFactory().Create(config.Rules))
+                .Using(rules)
                 .GenerateMessages()
                 .Result;
 

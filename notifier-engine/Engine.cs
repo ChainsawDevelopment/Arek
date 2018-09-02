@@ -50,7 +50,7 @@ namespace GitLabNotifier
             // Fill in defaults
             foreach (var mergeRequest in mergeRequests)
             {
-                mergeRequest.FillDefaultValues(_defaultRules);
+                mergeRequest.SetRules(_defaultRules);
             }
 
             await Task.WhenAll(UpdateMergeRequestsWithArekfile(mergeRequests));
@@ -83,6 +83,12 @@ namespace GitLabNotifier
         public Engine Using(IMessageRule rule)
         {
             _defaultRules.Add(rule);
+            return this;
+        }
+
+        public Engine Using(params IMessageRule[] rules)
+        {
+            _defaultRules.AddRange(rules);
             return this;
         }
 

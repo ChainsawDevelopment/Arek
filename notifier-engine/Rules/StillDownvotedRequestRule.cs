@@ -22,13 +22,10 @@ namespace GitLabNotifier
         {
             return ticketRequests.Select(GetMessage);
         }
-    }
 
-    public class StillDownvotedRequestRuleFactory : IRuleFactory<StillDownvotedRequestRule>
-    {
-        public StillDownvotedRequestRule Create(IDictionary<string, string> options)
+        public class Factory : IRuleFactory<StillDownvotedRequestRule>
         {
-            return new StillDownvotedRequestRule();
+            public StillDownvotedRequestRule Create(IDictionary<string, string> options) => new StillDownvotedRequestRule();
         }
     }
 }

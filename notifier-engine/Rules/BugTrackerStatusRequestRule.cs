@@ -9,11 +9,6 @@ namespace GitLabNotifier
         private readonly int _requiredVotesCount;
         private readonly string _codeReviewStatus;
         
-        public static BugTrackerStatusRequestRule ConfiguredWith(Configuration configuration)
-        {
-            return new BugTrackerStatusRequestRule(configuration.RequiredVotesCount, "Code Review");
-        }
-
         public BugTrackerStatusRequestRule(int requiredVotesCount, string codeReviewStatus)
         {
             _requiredVotesCount = requiredVotesCount;
@@ -84,6 +79,13 @@ namespace GitLabNotifier
                 GetAllRequestsApprovedMessage(request.TicketDetails, new[] {request})
             };
         }
-        
+
+        public class Factory : IRuleFactory<BugTrackerStatusRequestRule>
+        {
+            public BugTrackerStatusRequestRule Create(IDictionary<string, string> options)
+            {
+                return new BugTrackerStatusRequestRule(options["RequiredVotesCount"].ToInt(), "Code Review");
+            }
+        }
     }
 }

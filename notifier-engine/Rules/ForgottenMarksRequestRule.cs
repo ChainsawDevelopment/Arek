@@ -8,11 +8,6 @@ namespace GitLabNotifier
     {
         private readonly int _requiredVotes;
 
-        public static ForgottenMarksRequestRule ConfiguredWith(Configuration configuration)
-        {
-            return new ForgottenMarksRequestRule(configuration.RequiredVotesCount);
-        }    
-
         public ForgottenMarksRequestRule(int requiredVotes)
         {
             _requiredVotes = requiredVotes;
@@ -32,6 +27,14 @@ namespace GitLabNotifier
         public IEnumerable<IMessage> GetMessages(TicketDetails ticket, IEnumerable<IMergeRequest> ticketRequests)
         {
             return ticketRequests.Select(GetMessage);
+        }
+
+        public class Factory : IRuleFactory<ForgottenMarksRequestRule>
+        {
+            public ForgottenMarksRequestRule Create(IDictionary<string, string> options)
+            {
+                return new ForgottenMarksRequestRule(options["RequiredVotesCount"].ToInt());
+            }
         }
     }
 }

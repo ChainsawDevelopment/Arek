@@ -37,21 +37,20 @@ namespace GitLabNotifier
         {
             return ticketRequests.Select(GetMessage);
         }
-    }
 
-    public class OldRequestRuleFactory : IRuleFactory<OldRequestRule>
-    {
-        public OldRequestRule Create(IDictionary<string, string> options)
+        public class Factory : IRuleFactory<OldRequestRule>
         {
-            return new OldRequestRule(
-                ReadOldRequestThresholds(options), 
-                options["RequiredVotesCount"].ToInt());
+            public OldRequestRule Create(IDictionary<string, string> options)
+            {
+                return new OldRequestRule(
+                    ReadOldRequestThresholds(options),
+                    options["RequiredVotesCount"].ToInt());
+            }
+
+            private static int[] ReadOldRequestThresholds(IDictionary<string, string> options) => options["OldRequestThresholdsDays"]
+                .Split(',')
+                .Select(s => s.ToInt())
+                .ToArray();
         }
-
-        private static int[] ReadOldRequestThresholds(IDictionary<string, string> options) => options["OldRequestThresholdsDays"]
-            .Split(',')
-            .Select(s => s.ToInt())
-            .ToArray();
     }
-
 }
