@@ -22,7 +22,8 @@ namespace GitLabNotifier.VCS
         TicketDetails TicketDetails { get; set; }
         Dictionary<string, string[]> CommentAuthors { get; set; }
         string HeadHash { get; }
-        
+        bool IsOpened { get; }
+
         ProjectDetails ProjectDetails { get; set; }
         List<IMessageRule> Rules { get; }
     }

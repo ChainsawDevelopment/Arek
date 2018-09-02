@@ -15,6 +15,7 @@ namespace GitLabNotifier
 
         public RequestMessage GetMessage(IMergeRequest request)
         {
+            if (!request.IsOpened) return null;
             if (request.Upvotes < _requiredVotesCount && _requiredVotesCount - request.CommentAuthors["devs"].Length - request.CommentAuthors["qas"].Length > 0)
             {
                 return new RequestMessage(request, 

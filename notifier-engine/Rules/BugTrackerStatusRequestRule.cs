@@ -19,6 +19,18 @@ namespace GitLabNotifier
 
         public RequestMessage GetMessage(IMergeRequest request)
         {
+            if (!request.IsOpened)
+            {
+                if (!_closedStatuses.Contains(request.TicketDetails.Status))
+                {
+                    return new RequestMessage(request, $"Merge request closed but Issue has status \"{request.TicketDetails.Status}\"?", new[] { request.Author.Username });
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
             var markCommentAuthors = request.CommentAuthors;
 
             if (string.IsNullOrEmpty(request.TicketDetails.Status))
@@ -31,7 +43,8 @@ namespace GitLabNotifier
                 return null;
             }
 
-            if (_closedStatuses.Contains(request.TicketDetails.Status))
+            
+            if (_closedStatuses.Contains(request.TicketDetails.Status) )
             {
                 return new RequestMessage(request, "Issue closed but request not merged?", new[] { request.Author.Username }.Concat(markCommentAuthors["all"]));
             }

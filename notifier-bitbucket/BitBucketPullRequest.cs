@@ -29,6 +29,7 @@ namespace GitLabNotifier.VCS.Bitbucket
         public Dictionary<string, string[]> CommentAuthors { get; set; }
 
         public IEnumerable<string> CommentsAuthors { get; set; }
+        public bool IsOpened => true;
         public ProjectDetails ProjectDetails { get; set; }
         public List<IMessageRule> Rules { get; } = new List<IMessageRule>();
         public string HeadHash { get; set; }

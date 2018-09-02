@@ -22,7 +22,7 @@ namespace notifier_console_core
             var rules = config.Rules.Select(kvp => Rule.For(kvp.Key, kvp.Value)).ToArray();
 
             var outputMessages = new Engine()
-                .Using(Jira.WithConfig(config.JiraBaseUrl, config.JiraBaseUrl))
+                .Using(Jira.WithConfig(config.JiraBaseUrl, config.JiraToken))
                 .Using(GitLab.ConfiguredWith(config))
                 .Using(PersistentReviewerAssigner.ConfiguredWith(config))
                 .Using(rules)

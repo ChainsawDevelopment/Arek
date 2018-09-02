@@ -15,6 +15,7 @@ namespace GitLabNotifier
 
         public RequestMessage GetMessage(IMergeRequest request)
         {
+            if (!request.IsOpened) return null;
             if (request.Upvotes >= _requiredVotes) return null;
 
             var markReminderAuthors = request.CommentAuthors["allNotesAuthors"].Except(request.CommentAuthors["all"])

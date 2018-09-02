@@ -18,6 +18,7 @@ namespace GitLabNotifier
 
         public RequestMessage GetMessage(IMergeRequest request)
         {
+            if (!request.IsOpened) return null;
             var businessDays = request.CreatedAt.GetBusinessDaysTo(DateTime.Now);
             var isAboveThresholdForNotAcceptedRequests = businessDays > _oldRequestThresholdsDays[0];
             var isAboveThresholdForAllRequests = businessDays > _oldRequestThresholdsDays[1];

@@ -31,15 +31,25 @@ namespace notifier_gitlab
             return new WebClient { Headers = { ["PRIVATE-TOKEN"] = gitlabApiToken } };
         }
 
-        public Task<IMergeRequest[]> GetOpenMergeRequests(string projectId)
+        public async Task<IMergeRequest[]> GetOpenMergeRequests(string projectId)
         {
             var api = new Api(_gitlabUrl, _gitlabApiToken, Api.ApiVersion.V4);
 
-            return Task.Run(() => api.Get()
-                .GetAll<ExtendedMergeRequest>(Project.Url + "/" + projectId + "/merge_requests?state=" + MergeRequestState.opened)
+            var recentlyChanged = await Task.Run(() => api.Get()
+                .GetAll<ExtendedMergeRequest>(Project.Url + "/" + projectId + "/merge_requests?updated_after=2018-09-02T00:00:00.000Z")
                 .Select(r => new GitLabMergeRequest(projectId, r, _allProjects, _gitlabUrl))
                 .Cast<IMergeRequest>()
                 .ToArray());
+
+            var openeded = await Task.Run(() => api.Get()
+                .GetAll<ExtendedMergeRequest>(Project.Url + "/" + projectId + "/merge_requests?status=" + MergeRequestState.opened)
+                .Select(r => new GitLabMergeRequest(projectId, r, _allProjects, _gitlabUrl))
+                .Cast<IMergeRequest>()
+                .ToArray());
+
+
+            var relevantMergeRequests = recentlyChanged.Concat(openeded).Distinct().ToArray();
+            return relevantMergeRequests;
         }
 
         public Dictionary<string, string[]> GetCommenters(IMergeRequest request)
