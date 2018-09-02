@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using notifier_console_core;
 
 namespace GitLabNotifier.VCS
 {
@@ -30,8 +31,19 @@ namespace GitLabNotifier.VCS
     {
         public static void ApplyAdditionalDetails(this IMergeRequest request, AdditionalProjectDetails additionalProjectDetails)
         {
+            if (additionalProjectDetails == null)
+            {
+                return;
+            }
+
             request.ProjectDetails = request.ProjectDetails.TypedClone();
             request.ProjectDetails.AddDataFrom(additionalProjectDetails);
+
+            var newRules = additionalProjectDetails.Rules.Select(kvp => Rule.For(kvp.Key, kvp.Value)).ToList();
+            if (newRules.Any())
+            {
+                request.SetRules(newRules);
+            }
         }
 
         public static void SetRules(this IMergeRequest request, List<IMessageRule> rules)
