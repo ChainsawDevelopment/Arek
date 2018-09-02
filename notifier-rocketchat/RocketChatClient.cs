@@ -13,6 +13,9 @@ namespace notifier_rocketchat
         {
             var chatClient = new WebClient();
             var formatedMessages = FormatMessages(messages);
+
+            Console.WriteLine(formatedMessages);
+
             chatClient.UploadString(
                 Configuration.Instance.Value.RocketChatWebhookUrl,
                 JsonConvert.SerializeObject(new { text = formatedMessages }));

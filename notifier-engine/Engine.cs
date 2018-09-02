@@ -45,7 +45,7 @@ namespace GitLabNotifier
             var configuration = Configuration.Instance.Value;
             configuration.ReloadDevs();
 
-            IMergeRequest[] mergeRequests = await LoadMergeRequests();
+            IMergeRequest[] mergeRequests = (await LoadMergeRequests()).Where(mr => mr.Iid == "54").ToArray();
 
             // Fill in defaults
             foreach (var mergeRequest in mergeRequests)

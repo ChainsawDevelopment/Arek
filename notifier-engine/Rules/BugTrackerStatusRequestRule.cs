@@ -7,12 +7,14 @@ namespace GitLabNotifier
     public class BugTrackerStatusRequestRule : IMessageRule
     {
         private readonly int _requiredVotesCount;
-        private readonly string _codeReviewStatus;
-        
-        public BugTrackerStatusRequestRule(int requiredVotesCount, string codeReviewStatus)
+        private readonly HashSet<string> _acceptableStatuses;
+        private readonly HashSet<string> _closedStatuses;
+
+        public BugTrackerStatusRequestRule(int requiredVotesCount, string[] acceptableStatuses, string[] closedStatuses)
         {
             _requiredVotesCount = requiredVotesCount;
-            _codeReviewStatus = codeReviewStatus;
+            _acceptableStatuses = new HashSet<string>(acceptableStatuses);
+            _closedStatuses = new HashSet<string>(closedStatuses);
         }
 
         public RequestMessage GetMessage(IMergeRequest request)
@@ -21,27 +23,22 @@ namespace GitLabNotifier
 
             if (string.IsNullOrEmpty(request.TicketDetails.Status))
             {
-                return new RequestMessage(request, "Missing ticket status", new[] {request.Author.Username});
+                return new RequestMessage(request, "Missing ticket status", new[] { request.Author.Username });
             }
 
-            switch (request.TicketDetails.Status)
+            if (_acceptableStatuses.Contains(request.TicketDetails.Status))
             {
-                case "Code Review":
-                    break;
-                case "In Progress":
-                    break;
-                case "Testing":
-                    break;
-                case "Done":
-                    return new RequestMessage(request, "Issue closed but request not merged?", new[] { request.Author.Username }.Concat(markCommentAuthors["all"]));
-                case "":
-                    break;
-                default:
-                    if (request.Upvotes < _requiredVotesCount || request.Downvotes > 0)
-                    {
-                        return new RequestMessage(request, $"Not reviewed but {request.TicketDetails.Status}?", new[] { request.Author.Username }.Concat(markCommentAuthors["all"]));
-                    }
-                    break;
+                return null;
+            }
+
+            if (_closedStatuses.Contains(request.TicketDetails.Status))
+            {
+                return new RequestMessage(request, "Issue closed but request not merged?", new[] { request.Author.Username }.Concat(markCommentAuthors["all"]));
+            }
+
+            if (request.Upvotes < _requiredVotesCount || request.Downvotes > 0)
+            {
+                return new RequestMessage(request, $"Review in progress but issue has status \"{request.TicketDetails.Status}\"?", new[] { request.Author.Username }.Concat(markCommentAuthors["all"]));
             }
 
             return null;
@@ -51,9 +48,9 @@ namespace GitLabNotifier
         {
             var mergeRequests = ticketRequests as IMergeRequest[] ?? ticketRequests.ToArray();
             if (mergeRequests.All(request =>
-                _requiredVotesCount - request.Upvotes <= 0 && request.TicketDetails.Status == _codeReviewStatus))
+                _requiredVotesCount - request.Upvotes <= 0 && _acceptableStatuses.Contains(request.TicketDetails.Status)))
             {
-                return new TicketMessage(ticket, $"All requests approved but still in {_codeReviewStatus}",
+                return new TicketMessage(ticket, $"All requests approved but still in {ticket.Status}?",
                     mergeRequests.Select(request => request.Author.Username).Distinct());
             }
             else
@@ -84,7 +81,11 @@ namespace GitLabNotifier
         {
             public BugTrackerStatusRequestRule Create(IDictionary<string, string> options)
             {
-                return new BugTrackerStatusRequestRule(options["RequiredVotesCount"].ToInt(), "Code Review");
+                return new BugTrackerStatusRequestRule(
+                    options["RequiredVotesCount"].ToInt(),
+                    options["AcceptableStatuses"].Split(','),
+                    options["ClosedStatuses"].Split(',')
+                    );
             }
         }
     }

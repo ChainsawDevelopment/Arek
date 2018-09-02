@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -8,24 +7,16 @@ using Newtonsoft.Json.Linq;
 
 namespace GitLabNotifier
 {
-    public class JiraConfig
-    {
-        public string JiraUrl { get; set; }
-        public string Token { get; set; }
-
-        public string ProjectKey { get; set; }
-    }
-
     public class Jira : ITicketSystem
     {
         private readonly JiraConfig _config;
 
-        public Jira()
+        public Jira(string jiraBaseUrl, string jiraAuthHeader)
         {
             _config = new JiraConfig()
             {
-                JiraUrl = Configuration.Instance.Value.JiraBaseUrl,
-                Token = Configuration.Instance.Value.JiraToken
+                JiraUrl = jiraBaseUrl,
+                Token = jiraAuthHeader
             };
         }
 
@@ -82,20 +73,9 @@ namespace GitLabNotifier
             }
         }
 
-        public static ITicketSystem WithToken(string token)
+        public static ITicketSystem WithConfig(string baseUrl, string token)
         {
-            return new Jira();
-        }
-    }
-
-    static class JiraExtensions
-    {
-        private const string ProjectKey = "SPA";
-
-        public static string GetJiraId(this string requestTitle, string key=ProjectKey)
-        {
-            var match = new Regex($@".*({ProjectKey}-\d+).*").Match(requestTitle);
-            return match.Success ? match.Groups[1].Value : null;
+            return new Jira(baseUrl, token);
         }
     }
 }

@@ -18,6 +18,7 @@ namespace notifier_console_core
 
             if (ruleType == null)
             {
+                Console.WriteLine($"Cannot initialize requested rule \"{ruleName}\", error: rule not found.");
                 return null;
             }
 
@@ -27,15 +28,26 @@ namespace notifier_console_core
 
             if (factoryType == null)
             {
+                Console.WriteLine($"Cannot initialize requested rule \"{ruleName}\", error: factory not found.");
                 return null;
             }
 
             var methodInfo = factoryType.GetMethod(nameof(IRuleFactory<object>.Create));
-            var ruleObject = methodInfo.Invoke(
-                Create(factoryType),
-                new object[] { ruleOptions });
 
-            return ruleObject as IMessageRule;
+            try
+            {
+                var ruleObject = methodInfo.Invoke(
+                    Create(factoryType),
+                    new object[] {ruleOptions});
+
+                return ruleObject as IMessageRule;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Cannot initialize requested rule \"{ruleName}\", error: {e.Message}");
+            }
+
+            return null;
         }
 
         public static IMessageRule For(string ruleName, IDictionary<string, IDictionary<string, string>> rulesConfig) => For(ruleName, rulesConfig[ruleName]);
