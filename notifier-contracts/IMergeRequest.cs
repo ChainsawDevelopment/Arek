@@ -57,8 +57,7 @@ namespace GitLabNotifier.VCS
         {
             var mergeRequests = ticketRequests as IMergeRequest[] ?? ticketRequests.ToArray();
             return mergeRequests
-                .SelectMany(request => request.GenereteMessages(mergeRequests))
-                .Distinct();
+                .SelectMany(request => request.GenereteMessages(mergeRequests));
         }
 
         public static IEnumerable<IMessage> GenereteMessages(this IMergeRequest request, IEnumerable<IMergeRequest> allTicketRequests)

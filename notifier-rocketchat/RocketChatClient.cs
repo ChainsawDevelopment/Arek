@@ -27,8 +27,11 @@ namespace notifier_rocketchat
             var messages = outputMessages as IMessage[] ?? outputMessages.ToArray();
             if (messages.Any())
             {
-                message = string.Join("\n", messages.Select(msg =>
-                    msg.Message.AsRocketMessageTo(msg.Receipents).PrepareRocketLinkMessage(msg.LinkUrl, msg.LinkText)));
+                var allFormattedMessages = messages.Select(msg =>
+                                    msg.Message.AsRocketMessageTo(msg.Receipents).PrepareRocketLinkMessage(msg.LinkUrl, msg.LinkText))
+                                    .Distinct();
+
+                message = string.Join("\n", allFormattedMessages);
             }
             else
             {
