@@ -21,7 +21,7 @@ namespace GitLabNotifier
         {
             if (!request.IsOpened)
             {
-                if (!_closedStatuses.Contains(request.TicketDetails.Status))
+                if (!string.IsNullOrEmpty(request.TicketDetails.Status) &&! _closedStatuses.Contains(request.TicketDetails.Status))
                 {
                     return new RequestMessage(request, $"Merge request closed but Issue has status \"{request.TicketDetails.Status}\"?", new[] { request.Author.Username });
                 }
