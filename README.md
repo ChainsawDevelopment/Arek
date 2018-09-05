@@ -15,6 +15,13 @@ Bot that keeps an eye on your pull requests!
  - `arek-slack` - Implements Slack client for Arek to send out the notifications.
  - `arek-rocketchat` - Implements Rocketchat client for Arek to send out the notifications.
  
+## Building
+
+Run build script without any parameters:
+
+    build.cmd
+
+
 ## Arekfile
 
 |Property | Type | Description | Example |
