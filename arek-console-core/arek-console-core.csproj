@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>Arek.Console</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\arek-contracts\arek-contracts.csproj" />
+    <ProjectReference Include="..\arek-engine\arek-engine.csproj" />
+    <ProjectReference Include="..\arek-gitlab\arek-gitlab.csproj" />
+    <ProjectReference Include="..\arek-jira\arek-jira.csproj" />
+    <ProjectReference Include="..\arek-rocketchat\arek-rocketchat.csproj" />
+    <ProjectReference Include="..\arek-slack\arek-slack.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

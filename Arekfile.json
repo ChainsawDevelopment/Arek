@@ -1,6 +1,6 @@
 {
-    "primaryReviewers": "",
-    "secondaryReviewers": "",
+    "primaryReviewers": "mnowak,mdrobik",
+    "secondaryReviewers": "tmartyniak,mantoniak",
     "rules": {
         "MissingReviewsRequestRule": {
             "RequiredVotesCount": 2

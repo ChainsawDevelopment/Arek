@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "arek-bitbucket", "arek-bitbucket\arek-bitbucket.csproj", "{54F3DD61-802B-4AA0-BCF9-757AE8DD4D81}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "arek-console-core", "arek-console-core\arek-console-core.csproj", "{744B841C-EE81-4883-8201-8C9413CC9222}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "arek-contracts", "arek-contracts\arek-contracts.csproj", "{3543EA35-9608-4A59-80D0-4754C17EEA9E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "arek-engine", "arek-engine\arek-engine.csproj", "{219E5187-E92E-4647-9517-2E8BCA8E27FB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "arek-gitlab", "arek-gitlab\arek-gitlab.csproj", "{AFA9ED32-7416-4EC7-951A-6CA6B0BBF8BF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "arek-jira", "arek-jira\arek-jira.csproj", "{DE05265F-E0D9-4CA9-A30D-89E962F31CE2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "arek-rocketchat", "arek-rocketchat\arek-rocketchat.csproj", "{53A15161-16AB-4ED0-8D11-328AF2A52C9D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "arek-slack", "arek-slack\arek-slack.csproj", "{0C8D9B97-7877-4AD9-A571-68DED740D1A3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{54F3DD61-802B-4AA0-BCF9-757AE8DD4D81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54F3DD61-802B-4AA0-BCF9-757AE8DD4D81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54F3DD61-802B-4AA0-BCF9-757AE8DD4D81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54F3DD61-802B-4AA0-BCF9-757AE8DD4D81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{744B841C-EE81-4883-8201-8C9413CC9222}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{744B841C-EE81-4883-8201-8C9413CC9222}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{744B841C-EE81-4883-8201-8C9413CC9222}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{744B841C-EE81-4883-8201-8C9413CC9222}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3543EA35-9608-4A59-80D0-4754C17EEA9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3543EA35-9608-4A59-80D0-4754C17EEA9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3543EA35-9608-4A59-80D0-4754C17EEA9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3543EA35-9608-4A59-80D0-4754C17EEA9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{219E5187-E92E-4647-9517-2E8BCA8E27FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{219E5187-E92E-4647-9517-2E8BCA8E27FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{219E5187-E92E-4647-9517-2E8BCA8E27FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{219E5187-E92E-4647-9517-2E8BCA8E27FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFA9ED32-7416-4EC7-951A-6CA6B0BBF8BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFA9ED32-7416-4EC7-951A-6CA6B0BBF8BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFA9ED32-7416-4EC7-951A-6CA6B0BBF8BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFA9ED32-7416-4EC7-951A-6CA6B0BBF8BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE05265F-E0D9-4CA9-A30D-89E962F31CE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE05265F-E0D9-4CA9-A30D-89E962F31CE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE05265F-E0D9-4CA9-A30D-89E962F31CE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE05265F-E0D9-4CA9-A30D-89E962F31CE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53A15161-16AB-4ED0-8D11-328AF2A52C9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53A15161-16AB-4ED0-8D11-328AF2A52C9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53A15161-16AB-4ED0-8D11-328AF2A52C9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53A15161-16AB-4ED0-8D11-328AF2A52C9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C8D9B97-7877-4AD9-A571-68DED740D1A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C8D9B97-7877-4AD9-A571-68DED740D1A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C8D9B97-7877-4AD9-A571-68DED740D1A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C8D9B97-7877-4AD9-A571-68DED740D1A3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {97EF06DC-2EF0-4A6E-B2BA-1CF682FB5AF6}
+	EndGlobalSection
+EndGlobal

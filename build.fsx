@@ -20,11 +20,11 @@ let runMsbuild (project: string) (target: string) =
 Target "NuGetRestore" (fun _ ->
     let setParams (p: RestorePackageParams) = p
          
-    RestoreMSSolutionPackages setParams (source @@ "GitLabNotifier.sln")
+    RestoreMSSolutionPackages setParams (source @@ "Arek.sln")
 )
 
 Target "Build" (fun _ ->
-    runMsbuild (source @@ "GitLabNotifier.sln") "Build"
+    runMsbuild (source @@ "Arek.sln") "Build"
 )
 
 "NuGetRestore"
