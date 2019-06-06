@@ -70,12 +70,23 @@ namespace Arek.Engine
                 {
                     reviewer = GetNewAssignment(usersToTake == requiredVotes, mr, mr.Author.Username.ToLower(), lastRequests, assignments, except.Concat(applicableUsers).ToList());
 
-                    lastAssignments.Add(new Tuple<int, string>(mr.Id, reviewer));
+                    if (reviewer != null)
+                    {
+                        lastAssignments.Add(new Tuple<int, string>(mr.Id, reviewer));
+                    }
                 }
 
-                assignments.AddOrUpdate(reviewer, () => 1, x => x + 1);
+                if (string.IsNullOrEmpty(reviewer))
+                {
+                    Console.Error.WriteLine($"Cannot assign any reviewer to {mr.Project}/{mr.Id}");
+                }
+                else 
+                {
+                    Console.WriteLine($"Assigning {reviewer} to {mr.Project}/{mr.Id}");
+                    assignments.AddOrUpdate(reviewer, () => 1, x => x + 1);
 
-                applicableUsers.Add(reviewer);
+                    applicableUsers.Add(reviewer);
+                }
             }
 
             mr.Reviewers = applicableUsers.ToArray();
@@ -133,13 +144,11 @@ namespace Arek.Engine
                     .Except(except);
             }
 
-            var reviewersHash = new HashSet<string>(reviewers);
+            // var reviewersHash = new HashSet<string>(reviewers);
 
-            return devAssignments.Where(d => reviewersHash.Contains(d.Key))
-                .OrderBy(d => d.Value)
-                .ThenBy(d => devLastRequests.ContainsKey(d.Key) ? devLastRequests[d.Key] : 0)
-                .ThenBy(d => d.Key)
-                .Select(d => d.Key)
+            return reviewers
+                .OrderBy(d => devLastRequests.ContainsKey(d) ? devLastRequests[d] : 0)
+                .ThenBy(d => d)
                 .FirstOrDefault();
         }
 

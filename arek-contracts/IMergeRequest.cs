@@ -39,7 +39,7 @@ namespace Arek.Contracts
             request.ProjectDetails = request.ProjectDetails.TypedClone();
             request.ProjectDetails.AddDataFrom(additionalProjectDetails);
 
-            var newRules = additionalProjectDetails.Rules.Select(kvp => Rule.For(kvp.Key, kvp.Value)).ToList();
+            var newRules = additionalProjectDetails.Rules?.Select(kvp => Rule.For(kvp.Key, kvp.Value))?.ToList() ?? new List<IMessageRule>();
             if (newRules.Any())
             {
                 request.SetRules(newRules);
