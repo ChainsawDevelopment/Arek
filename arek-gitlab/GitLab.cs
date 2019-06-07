@@ -15,14 +15,12 @@ namespace Arek.GitLab
         private readonly string _gitlabUrl;
         private readonly string _gitlabApiToken;
         private readonly ProjectDetails[] _allProjects;
-        private readonly WebClient _webClient;
 
         public GitLab(string gitlabUrl, string gitlabApiToken, ProjectDetails[] allProjects)
         {
             _gitlabUrl = gitlabUrl;
             _gitlabApiToken = gitlabApiToken;
             _allProjects = allProjects ?? new ProjectDetails[0];
-            _webClient = GitLabWebClient(gitlabApiToken);
         }
 
         private static WebClient GitLabWebClient(string gitlabApiToken)
@@ -43,7 +41,7 @@ namespace Arek.GitLab
                 .ToArray());
 
             var openeded = await Task.Run(() => api.Get()
-                .GetAll<ExtendedMergeRequest>(Project.Url + "/" + projectId + "/merge_requests?status=" + MergeRequestState.opened)
+                .GetAll<ExtendedMergeRequest>(Project.Url + "/" + projectId + "/merge_requests?state=" + MergeRequestState.opened)
                 .Select(r => new GitLabMergeRequest(projectId, r, _allProjects, _gitlabUrl))
                 .Cast<IMergeRequest>()
                 .ToArray());
@@ -54,8 +52,9 @@ namespace Arek.GitLab
 
         public Dictionary<string, string[]> GetCommenters(IMergeRequest request)
         {
-            var notes = GitLabWebClient(_gitlabApiToken).GetNotesForMergeRequest(request as GitLabMergeRequest);
-            var awards = GitLabWebClient(_gitlabApiToken).GetAwardsForMergeRequest(request as GitLabMergeRequest);
+            var webClient = GitLabWebClient(_gitlabApiToken);
+            var notes = webClient.GetNotesForMergeRequest(request as GitLabMergeRequest);
+            var awards = webClient.GetAwardsForMergeRequest(request as GitLabMergeRequest);
 
             var markCommentAuthors = new Dictionary<string, string[]>();
 

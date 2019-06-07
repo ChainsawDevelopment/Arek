@@ -31,12 +31,12 @@ namespace Arek.Engine
             ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
         }
 
-        public IEnumerable<Task> UpdateMergeRequestsWithArekfile(IMergeRequest[] mergeRequests)
+        public async Task UpdateMergeRequestsWithArekfile(IMergeRequest[] mergeRequests)
         {
             foreach (var mergeRequest in mergeRequests)
             {
-                yield return _gitServers.First().RetrieveAdditionalProjectDetails(mergeRequest.Project, mergeRequest.HeadHash)
-                    .ContinueWith(additionalDetails => mergeRequest.ApplyAdditionalDetails(additionalDetails.Result));
+                var additionalDetails = await _gitServers.First().RetrieveAdditionalProjectDetails(mergeRequest.Project, mergeRequest.HeadHash);
+                mergeRequest.ApplyAdditionalDetails(additionalDetails);
             }
         }
 
@@ -53,7 +53,7 @@ namespace Arek.Engine
                 mergeRequest.SetRules(_defaultRules);
             }
 
-            await Task.WhenAll(UpdateMergeRequestsWithArekfile(mergeRequests));
+            await UpdateMergeRequestsWithArekfile(mergeRequests);
 
             foreach (var reviewerAssigner in _reviewerAssigners)
             {

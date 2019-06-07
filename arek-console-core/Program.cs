@@ -27,7 +27,8 @@ namespace Arek.Console
                 .Using(PersistentReviewerAssigner.ConfiguredWith(config))
                 .Using(rules)
                 .GenerateMessages()
-                .Result;
+                .Result
+                .OrderBy(message => message.LinkText);
 
             new RocketChatClient().SendMessages(outputMessages);
         }
