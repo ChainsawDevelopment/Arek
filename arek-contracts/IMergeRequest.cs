@@ -25,6 +25,8 @@ namespace Arek.Contracts
 
         ProjectDetails ProjectDetails { get; set; }
         List<IMessageRule> Rules { get; }
+
+        string SourceBranchName { get; }
     }
 
     public static class MergeRequestExtensions

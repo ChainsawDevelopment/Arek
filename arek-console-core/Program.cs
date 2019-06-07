@@ -22,7 +22,7 @@ namespace Arek.Console
             var rules = config.Rules.Select(kvp => Rule.For(kvp.Key, kvp.Value)).ToArray();
 
             var outputMessages = new Engine.Engine()
-                // .Using(Jira.Jira.WithConfig(config.JiraBaseUrl, config.JiraToken))
+                .Using(Jira.Jira.WithConfig(config.JiraBaseUrl, config.JiraToken))
                 .Using(GitLab.GitLab.ConfiguredWith(config))
                 .Using(PersistentReviewerAssigner.ConfiguredWith(config))
                 .Using(rules)

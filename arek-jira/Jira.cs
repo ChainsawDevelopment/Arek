@@ -28,15 +28,18 @@ namespace Arek.Jira
 
         public async Task<TicketDetails> GetTicketStatus(IMergeRequest request)
         {
-            Console.WriteLine($"Getting JIRA status for {request.Title}");
+
+            var jiraId = GetJiraId(request.Title) ?? GetJiraId(request.SourceBranchName);
 
             try
             {
-                var jiraId = GetJiraId(request.Title);
                 if (string.IsNullOrEmpty(jiraId))
                 {
+                    Console.WriteLine($"Cannot find jira ticket id for {request.Title}");
                     return new TicketDetails(jiraId);
                 }
+                
+                Console.WriteLine($"Getting JIRA {jiraId} status for {request.Title}");
 
                 var jiraUrl = $"{_config.JiraUrl}/rest/api/latest/issue/{jiraId}?fields=status";
 
@@ -49,7 +52,7 @@ namespace Arek.Jira
 
                 var parsedJiraIssue = JObject.Parse(jiraResposne);
                 var ticketDetails = new TicketDetails(jiraId);
-                ticketDetails.Url = $"{jiraUrl}/browse/{jiraId}";
+                ticketDetails.Url = $"{_config.JiraUrl}/browse/{jiraId}";
                 ticketDetails.Status = parsedJiraIssue["fields"]["status"]["name"].ToString();
                 if (parsedJiraIssue["fields"]["labels"] != null)
                 {
@@ -60,13 +63,15 @@ namespace Arek.Jira
                     ticketDetails.Labels = new string[] { };
                 }
 
+                Console.WriteLine($"JIRA {jiraId} status for {request.Title} is {ticketDetails.Status}");
+
                 return ticketDetails;
             }
             catch (WebException e)
             {
-                if (((HttpWebResponse)e.Response).StatusCode == HttpStatusCode.NotFound)
+                if (((HttpWebResponse)e.Response)?.StatusCode == HttpStatusCode.NotFound)
                 {
-                    return new TicketDetails(GetJiraId(request.Title));
+                    return new TicketDetails(jiraId);
                 }
 
                 throw;

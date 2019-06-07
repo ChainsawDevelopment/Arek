@@ -47,6 +47,8 @@ namespace Arek.GitLab
         public int SourceProjectId => _wrapped.SourceProjectId;
         public int TargetProjectId => _wrapped.TargetProjectId;
 
+        public string SourceBranchName => SourceBranch;
+
         protected bool Equals(GitLabMergeRequest other)
         {
             return string.Equals(Url, other.Url);

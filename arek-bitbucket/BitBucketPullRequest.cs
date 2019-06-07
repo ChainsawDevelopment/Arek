@@ -33,6 +33,8 @@ namespace Arek.Bitbucket
         public ProjectDetails ProjectDetails { get; set; }
         public List<IMessageRule> Rules { get; } = new List<IMessageRule>();
         public string HeadHash { get; set; }
+
+        public string SourceBranchName { get; } = null;
     }
 
     static class EnumerableHelper

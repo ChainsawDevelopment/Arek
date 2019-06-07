@@ -12,7 +12,7 @@ namespace Arek.RocketChat
         public static string AsRocketMessageTo(this string message, IEnumerable<string> authors)
         {
             if (!authors.Any())
-                return null;
+                return message;
 
             var logins = string.Join(" ", authors.Select(RocketLoginMention));
             var outgoinMessage = $"{message} - {logins}";
