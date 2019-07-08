@@ -16,7 +16,7 @@ namespace Arek.Engine.Rules
         public RequestMessage GetMessage(IMergeRequest request)
         {
             if (!request.IsOpened) return null;
-            if (request.Upvotes < _requiredVotesCount && _requiredVotesCount - request.CommentAuthors["devs"].Length - request.CommentAuthors["qas"].Length > 0)
+            if (request.Upvotes < _requiredVotesCount && _requiredVotesCount - request.CommentAuthors["devs"].Length > 0)
             {
                 return new RequestMessage(request, 
                     $"{_requiredVotesCount - request.CommentAuthors["devs"].Length} more review needed",

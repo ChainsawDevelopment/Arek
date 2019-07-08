@@ -91,8 +91,7 @@ namespace Arek.Bitbucket
             var markCommentAuthors = new Dictionary<string, string[]>
             {
                 ["all"] = allCommenters.ToArray(),
-                ["devs"] = allCommenters.ToArray(),
-                ["qas"] = new string[] { }
+                ["devs"] = allCommenters.ToArray()
             };
 
             markCommentAuthors["allNotesAuthors"] = allCommenters.ToArray();

@@ -35,7 +35,6 @@ namespace Arek.Engine
 
             var configuration = new Configuration();
             
-            configuration.Qas = configReader["Qas"].Split(',');
             configuration.GitlabApiToken = configReader["GitLabApiToken"];
 
             configuration.BitbucketTeamUuid = configReader["BitbucketTeamUuid"];
@@ -76,7 +75,7 @@ namespace Arek.Engine
 
         public string GitlabApiToken { get; private set; }
 
-        public string[] Qas { get; private set; }
+        // public string[] Qas { get; private set; }
 
         public string[] Devs { get; private set; }
 

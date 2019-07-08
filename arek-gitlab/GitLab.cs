@@ -75,9 +75,7 @@ namespace Arek.GitLab
 
             markCommentAuthors["all"] = markCommentAuthors["positive"].Union(markCommentAuthors["negative"]).ToArray();
 
-            markCommentAuthors["devs"] = markCommentAuthors["all"].Except(Configuration.Instance.Value.Qas).ToArray();
-
-            markCommentAuthors["qas"] = markCommentAuthors["all"].Except(Configuration.Instance.Value.Devs).ToArray();
+            markCommentAuthors["devs"] = markCommentAuthors["all"]; //.Except(Configuration.Instance.Value.Qas).ToArray();
 
             return markCommentAuthors;
         }
