@@ -6,7 +6,8 @@ namespace Arek.Engine.Rules
     public class RequestMessage : IMessage
     {
         public IMergeRequest Request { get; }
-        public string LinkText => $"{Request.TicketID ?? Request.Title} ({Request.ProjectDetails?.ShortName ?? "UNK"})";
+        public string LinkText => $"{Request.Title ?? string.Empty} ({Request.ProjectDetails?.ShortName ?? "UNK"}, {Request.TicketID ?? "no id"})"
+        .Trim();
         public string LinkUrl => Request.Url;
         public string Message { get; }
         public IEnumerable<string> Receipents { get; }

@@ -24,6 +24,7 @@ namespace Arek.RocketChat
         public string FormatMessages(IEnumerable<IMessage> outputMessages)
         {
             string message;
+
             var messages = outputMessages as IMessage[] ?? outputMessages.ToArray();
             if (messages.Any())
             {

@@ -27,7 +27,7 @@ namespace Arek.Engine.Rules
             {
                 return new RequestMessage(
                     request,
-                    $"Created {(int)businessDays} days ago" + (request.TicketDetails.Status != "" ? $"with status {request.TicketDetails.Status}" : ""), 
+                    $"Created {(int)businessDays} days ago" + (request.TicketDetails.Status != "" ? $" with status {request.TicketDetails.Status}" : ""), 
                     new[] { request.Author.Username });
             }
 
