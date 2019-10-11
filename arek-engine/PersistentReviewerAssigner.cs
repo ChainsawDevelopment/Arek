@@ -11,31 +11,39 @@ namespace Arek.Engine
     {
         private readonly string[] _devs;
         private readonly int _requiredVotesCount;
+        private readonly Func<List<Tuple<int, string>>> _loadLastAssignments;
 
         public static PersistentReviewerAssigner ConfiguredWith(Configuration configuration)
         {
             return new PersistentReviewerAssigner(configuration.Devs, configuration.RequiredVotesCount);
         }
 
-        public PersistentReviewerAssigner(string[] configurationDevs, int requiredVotesCount)
+        public PersistentReviewerAssigner(string[] configurationDevs, int requiredVotesCount, Func<List<Tuple<int, string>>> loadLastAssignments = null)
         {
-            _devs = configurationDevs;
+            _devs = configurationDevs.Distinct().ToArray();
             _requiredVotesCount = requiredVotesCount;
+            _loadLastAssignments = loadLastAssignments ?? LoadLastAssignments;
         }
 
         public void AssignReviewers(IMergeRequest[] mergeRequests)
         {
-            var lastAssignmentsStore = LoadLastAssignments();
+            var lastAssignmentsStore = _loadLastAssignments();
 
-            var devAssignments = _devs.Distinct().ToDictionary(d => d, d => 0);
-            var devLastAssignmentsMap = _devs.ToDictionary(
-                dev => dev,
-                dev => lastAssignmentsStore.Any(a => a.Item2 == dev)
-                    ? lastAssignmentsStore.Where(a => a.Item2 == dev).Select(a => a.Item1).Max()
-                    : 0);
+            var devAssignments = new Dictionary<string, int>();
 
             foreach (var request in mergeRequests)
             {
+                var requestTeam = request.ProjectDetails;
+                var knownDevs = _devs.Concat(requestTeam.PrimaryReviewers).Concat(requestTeam.SecondaryReviewers).Distinct().ToList();
+                foreach (var dev in knownDevs.Except(devAssignments.Keys.ToList()))
+                {
+                    devAssignments[dev] = 0;
+                }
+
+                var devLastAssignmentsMap = knownDevs.ToDictionary(dev => dev,
+                    dev => lastAssignmentsStore.Any(a => a.Item2 == dev)
+                    ? lastAssignmentsStore.Where(a => a.Item2 == dev).Select(a => a.Item1).Max()
+                    : 0);
                 AssignReviewers(request, request.CommentAuthors["devs"], devLastAssignmentsMap,
                     lastAssignmentsStore, devAssignments, _requiredVotesCount);
             }
@@ -99,7 +107,7 @@ namespace Arek.Engine
             File.WriteAllText(lastAssignmentsFilePath, JsonConvert.SerializeObject(lastAssignments));
         }
 
-        private List<Tuple<int, string>> LoadLastAssignments()
+        private static List<Tuple<int, string>> LoadLastAssignments()
         {
             var lastAssignmentsFilePath = GetLastAssignmentsFilePath();
 
@@ -109,10 +117,10 @@ namespace Arek.Engine
             return JsonConvert.DeserializeObject<List<Tuple<int, string>>>(File.ReadAllText(lastAssignmentsFilePath));
         }
 
-        private string GetLastAssignmentsFilePath()
+        private static string GetLastAssignmentsFilePath()
         {
             return Path.Combine(
-                Path.GetDirectoryName(GetType().Assembly.Location),
+                Path.GetDirectoryName(typeof(PersistentReviewerAssigner).Assembly.Location),
                 "lastAssignments.json");
         }
 
