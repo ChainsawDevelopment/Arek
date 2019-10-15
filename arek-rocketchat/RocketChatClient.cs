@@ -18,7 +18,7 @@ namespace Arek.RocketChat
 
             chatClient.UploadString(
                 Configuration.Instance.Value.RocketChatWebhookUrl,
-                JsonConvert.SerializeObject(new { text = formatedMessages }));
+                JsonConvert.SerializeObject(new { text = formatedMessages, attachments = new List<string>() }));
         }
 
         public string FormatMessages(IEnumerable<IMessage> outputMessages)
