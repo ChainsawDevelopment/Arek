@@ -63,7 +63,7 @@ namespace Arek.Engine.Rules
             if (mergeRequests.All(request =>
                 _requiredVotesCount - request.Upvotes <= 0 && _acceptableStatuses.Contains(request.TicketDetails.Status)))
             {
-                return new TicketMessage(ticket, $"All requests approved but still in {ticket.Status}?",
+                return new TicketMessage(mergeRequests.First(), $"All requests approved but still in {ticket.Status}?",
                     mergeRequests.Select(request => request.Author.Username).Distinct());
             }
             else

@@ -60,10 +60,11 @@ namespace Arek.Engine
                 reviewerAssigner.AssignReviewers(mergeRequests);
             }
 
-            var outputMessages = mergeRequests.GroupBy(request => request.TicketDetails)
-                .SelectMany(ticketRequests => ticketRequests.GenerateMessages())
-                .Where(message => message != null)
-                .ToList();
+            var outputMessages = mergeRequests.GenerateMessages()
+                    .Where(message => message != null)
+                    .OrderBy(x => x.Request.Project)
+                    .ThenBy(x => x.Request.TicketDetails.Id)
+                    .ToArray();
 
             return outputMessages;
         }

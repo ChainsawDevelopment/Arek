@@ -23,7 +23,7 @@ namespace Arek.Slack
             if (messages.Any())
             {
                 message = string.Join("\n", messages.Select(msg =>
-                    msg.Message.AsSlackMessageTo(msg.Receipents).PrepareSlackLinkMessage(msg.LinkUrl, msg.LinkText)));
+                    msg.Message.AsSlackMessageTo(msg.Recipients).PrepareSlackLinkMessage(msg.LinkUrl, msg.LinkText)));
             }
             else
             {

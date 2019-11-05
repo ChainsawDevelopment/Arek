@@ -17,7 +17,7 @@ namespace Arek.Contracts
 
         protected bool Equals(TicketDetails other)
         {
-            return string.Equals(Id, other.Id);
+            return Id != null && string.Equals(Id, other.Id);
         }
 
         public override bool Equals(object obj)

@@ -7,6 +7,7 @@ namespace Arek.Contracts
         string LinkUrl { get;  }
         string LinkText { get;  }
         string Message { get; }
-        IEnumerable<string> Receipents { get; }
+        IEnumerable<string> Recipients { get; }
+        IMergeRequest Request { get; }
     }
 }

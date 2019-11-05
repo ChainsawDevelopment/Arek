@@ -92,12 +92,23 @@ namespace Arek.GitLab
             try
             {
                 var fileUrl = $"/projects/{projectId}/repository/files/{Uri.EscapeDataString(file)}/raw?ref={commitHash}";
-                return await Task.Run(() => api.Get().To<T>(fileUrl));
+                return await Task.Run(() =>
+                {
+                    try
+                    {
+                        return api.Get().To<T>(fileUrl);
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine($"File {file} not found for {projectId}, ref {commitHash}");
+                        return default;
+                    }
+                });
             }
             catch (Exception)
             {
                 Console.WriteLine($"File {file} not found for {projectId}, ref {commitHash}");
-                return default(T);
+                return default;
             }
         }
 

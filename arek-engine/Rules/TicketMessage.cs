@@ -8,15 +8,17 @@ namespace Arek.Engine.Rules
         public string LinkUrl => Ticket.Url;
         public string LinkText => Ticket.Id;
 
-        public TicketMessage(TicketDetails ticket, string message, IEnumerable<string> receipents)
+        public TicketMessage(IMergeRequest request, string message, IEnumerable<string> recipients)
         {
-            Ticket = ticket;
+            Request = request;
+            Ticket = request.TicketDetails;
             Message = message;
-            Receipents = receipents;
+            Recipients = recipients;
         }
         
         public TicketDetails Ticket { get; }
         public string Message { get; }
-        public IEnumerable<string> Receipents { get; }
+        public IEnumerable<string> Recipients { get; }
+        public IMergeRequest Request { get; }
     }
 }

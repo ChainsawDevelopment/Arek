@@ -15,8 +15,8 @@ namespace Arek.RocketChat
                 return message;
 
             var logins = string.Join(" ", authors.Select(RocketLoginMention));
-            var outgoinMessage = $"{message} - {logins}";
-            return outgoinMessage;
+            var outgoingMessage = $"{message} - {logins}";
+            return outgoingMessage;
         }
 
         public static string PrepareRocketLinkMessage(this string message, string linkUrl, string linkText)

@@ -12,13 +12,13 @@ namespace Arek.RocketChat
         public void SendMessages(IEnumerable<IMessage> messages)
         {
             var chatClient = new WebClient();
-            var formatedMessages = FormatMessages(messages);
+            var formattedMessages = FormatMessages(messages);
 
-            Console.WriteLine(formatedMessages);
+            Console.WriteLine(formattedMessages);
 
             chatClient.UploadString(
                 Configuration.Instance.Value.RocketChatWebhookUrl,
-                JsonConvert.SerializeObject(new { text = formatedMessages, attachments = new List<string>() }));
+                JsonConvert.SerializeObject(new { text = formattedMessages, attachments = new List<string>() }));
         }
 
         public string FormatMessages(IEnumerable<IMessage> outputMessages)
@@ -29,7 +29,7 @@ namespace Arek.RocketChat
             if (messages.Any())
             {
                 var allFormattedMessages = messages.Select(msg =>
-                                    msg.Message.AsRocketMessageTo(msg.Receipents).PrepareRocketLinkMessage(msg.LinkUrl, msg.LinkText))
+                                    msg.Message.AsRocketMessageTo(msg.Recipients).PrepareRocketLinkMessage(msg.LinkUrl, msg.LinkText))
                                     .Distinct();
 
                 message = string.Join("\n", allFormattedMessages);
