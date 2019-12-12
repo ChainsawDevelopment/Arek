@@ -58,10 +58,10 @@ namespace Arek.Contracts
         {
             var mergeRequests = ticketRequests as IMergeRequest[] ?? ticketRequests.ToArray();
             return mergeRequests
-                .SelectMany(request => request.GenereteMessages(mergeRequests));
+                .SelectMany(request => request.GenerateMessages(mergeRequests));
         }
 
-        public static IEnumerable<IMessage> GenereteMessages(this IMergeRequest request, IEnumerable<IMergeRequest> allTicketRequests)
+        public static IEnumerable<IMessage> GenerateMessages(this IMergeRequest request, IEnumerable<IMergeRequest> allTicketRequests)
         {
             return request.Rules.SelectMany(rule => rule.GetMessages(request.TicketDetails, allTicketRequests));
         }

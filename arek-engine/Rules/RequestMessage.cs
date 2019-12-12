@@ -10,13 +10,13 @@ namespace Arek.Engine.Rules
         .Trim();
         public string LinkUrl => Request.Url;
         public string Message { get; }
-        public IEnumerable<string> Receipents { get; }
-
-        public RequestMessage(IMergeRequest request, string message, IEnumerable<string> receipents)
+        public IEnumerable<string> Recipients { get; }
+        
+        public RequestMessage(IMergeRequest request, string message, IEnumerable<string> recipients)
         {
             Request = request;
             Message = message;
-            Receipents = receipents;
+            Recipients = recipients;
         }
     }
 }
