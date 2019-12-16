@@ -21,14 +21,7 @@ namespace Arek.Engine.Rules
         {
             if (!request.IsOpened)
             {
-                if (!string.IsNullOrEmpty(request.TicketDetails.Status) &&! _closedStatuses.Contains(request.TicketDetails.Status))
-                {
-                    return new RequestMessage(request, $"Merge request closed but Issue has status \"{request.TicketDetails.Status}\"?", new[] { request.Author.Username });
-                }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
 
             var markCommentAuthors = request.CommentAuthors;
@@ -66,10 +59,15 @@ namespace Arek.Engine.Rules
                 return new TicketMessage(mergeRequests.First(), $"All requests approved but still in {ticket.Status}?",
                     mergeRequests.Select(request => request.Author.Username).Distinct());
             }
-            else
-            {
-                return null;
+            else if (!_closedStatuses.Contains(ticket.Status))
+            {                
+                if (ticketRequests.All(r => !r.IsOpened))
+                {
+                    return new TicketMessage(mergeRequests.First(), $"All merge requests closed but Issue has status \"{ticket.Status}\"?", mergeRequests.Select(request => request.Author.Username).Distinct());
+                }
             }
+            
+            return null;            
         }
 
         public IEnumerable<IMessage> GetMessages(TicketDetails ticket, IEnumerable<IMergeRequest> ticketRequests)
