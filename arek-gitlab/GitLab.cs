@@ -46,7 +46,7 @@ namespace Arek.GitLab
                 .Cast<IMergeRequest>()
                 .ToArray());
 
-            var relevantMergeRequests = recentlyChanged.Concat(openeded).Distinct().ToArray();
+            var relevantMergeRequests = recentlyChanged.Concat(openeded).Distinct().Where(x => !x.Title.StartsWith("WIP:")).ToArray();
             return relevantMergeRequests;
         }
 
