@@ -32,7 +32,7 @@ namespace Arek.RocketChat
                                     msg.Message.AsRocketMessageTo(msg.Recipients).PrepareRocketLinkMessage(msg.LinkUrl, msg.LinkText))
                                     .Distinct();
 
-                message = string.Join("\n", allFormattedMessages);
+                message = string.Join("\n", allFormattedMessages).Replace("\"", string.Empty);
             }
             else
             {
