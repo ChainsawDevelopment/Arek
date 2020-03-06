@@ -56,6 +56,8 @@ namespace Arek.Engine
             var usersToTake = Math.Max(requiredVotes - commentAuthors.Count, 0);
             var except = commentAuthors.Concat(new[] { mr.Author.Username.ToLower() }).ToList();
 
+            var primaryAssignment = usersToTake == requiredVotes;
+
             var applicableUsers = new List<string>();
 
             while (usersToTake-- > 0)
@@ -76,7 +78,7 @@ namespace Arek.Engine
 
                 if (reviewer == null)
                 {
-                    reviewer = GetNewAssignment(usersToTake == requiredVotes, mr, mr.Author.Username.ToLower(), lastRequests, assignments, except.Concat(applicableUsers).ToList());
+                    reviewer = GetNewAssignment(primaryAssignment, mr, mr.Author.Username.ToLower(), lastRequests, assignments, except.Concat(applicableUsers).ToList());
 
                     if (reviewer != null)
                     {
@@ -95,6 +97,8 @@ namespace Arek.Engine
 
                     applicableUsers.Add(reviewer);
                 }
+
+                primaryAssignment = false;
             }
 
             mr.Reviewers = applicableUsers.ToArray();
