@@ -239,3 +239,6 @@ _Pvt_Extensions
 
 # git confict orig files
 *.orig
+
+.fake
+.ionide

@@ -25,6 +25,7 @@ namespace Arek.Console
                 .Using(Jira.Jira.WithConfig(config.JiraBaseUrl, config.JiraToken))
                 .Using(GitLab.GitLab.ConfiguredWith(config))
                 .Using(PersistentReviewerAssigner.ConfiguredWith(config))
+                .Using(new PersistentVerifierAssigner())
                 .Using(rules)
                 .GenerateMessages()
                 .Result;
