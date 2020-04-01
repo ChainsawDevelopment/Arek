@@ -53,7 +53,7 @@ namespace Arek.RocketChat
                                 .Select(groupedMessages =>
                                 {
                                     return new[] { $"• [{groupedMessages.First().LinkText}]({groupedMessages.Key})".Indent(1) }
-                                    .Concat(groupedMessages.Select(msg => msg.Message.AsRocketMessageTo(msg.Recipients).Indent(3)))
+                                    .Concat(groupedMessages.Select(msg => ("• " + msg.Message.AsRocketMessageTo(msg.Recipients)).Indent(3)))
                                     .ToSingleMessage();
                                 })
                          );
